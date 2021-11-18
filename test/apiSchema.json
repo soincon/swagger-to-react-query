@@ -1,0 +1,630 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "My Factory API RESTful",
+        "description": "Contract to deal with factory assets",
+        "termsOfService": "",
+        "contact": {
+            "name": "Staff",
+            "url": "http://www.soincon.es",
+            "email": "admin@soincon.es"
+        },
+        "license": {
+            "name": "SOINCON S.L. private license",
+            "url": ""
+        },
+        "version": "1.0.0"
+    },
+    "externalDocs": {
+        "description": "My Factory API Wiki Documentation",
+        "url": "https://portal.soincon.es/apis/snc-mf-api"
+    },
+    "servers": [
+        {
+            "url": "/snc-mf-api"
+        }
+    ],
+    "security": [
+        {
+            "bearer-jwt": ["read", "write"]
+        }
+    ],
+    "paths": {
+        "/v1/{clientId}/countries/{id}": {
+            "get": {
+                "tags": ["country-controller"],
+                "summary": "Returns the specified country",
+                "description": "Retrieves the data that match with the specified identifier",
+                "operationId": "getCountry",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "path",
+                        "description": "clientId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "the identifier of the country to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Country retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer-jwt": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": ["country-controller"],
+                "summary": "Updates the specified country",
+                "description": "Updates the existing data with the specified one in the request body",
+                "operationId": "putCountry",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "the identifier of the country to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CountryDto"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Country updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer-jwt": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": ["country-controller"],
+                "summary": "Deletes permanently the specified country",
+                "description": "Removes the existing data permanently",
+                "operationId": "deleteCountry",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "the identifier of the country to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Country deleted successfully",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer-jwt": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": ["country-controller"],
+                "summary": "Updates 'partially' the specified country",
+                "description": "Updates the existing data with a structure which has the changes to apply (see rfc6902)",
+                "operationId": "patchCountry",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "the identifier of the country to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/JsonPatch"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/JsonPatch"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Country updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer-jwt": []
+                    }
+                ]
+            }
+        },
+        "/v1/countries": {
+            "post": {
+                "tags": ["country-controller"],
+                "summary": "Creates a new country",
+                "description": "Creates a new country using the specified data",
+                "operationId": "postCountry",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CountryDto"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Country created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer-jwt": []
+                    }
+                ],
+                "x-is-read": "false"
+            }
+        },
+        "/v1/{clientId}/{someParam}/countries": {
+            "post": {
+                "tags": ["country-controller"],
+                "summary": "Creates a new country",
+                "description": "Creates a new country using the specified data",
+                "operationId": "postCountryWithPathParams",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "path",
+                        "description": "clientId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "someParam",
+                        "in": "path",
+                        "description": "the identifier of the country to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CountryDto"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Country created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer-jwt": []
+                    }
+                ],
+                "x-is-read": "false"
+            }
+        },
+        "/v1/countries/search/{id}": {
+            "get": {
+                "tags": ["country-controller"],
+                "operationId": "getCountryWithQuery",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "path",
+                        "description": "clientId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "param",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Country retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer-jwt": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": ["country-controller"],
+                "summary": "Returns all countries which match with the specified filter",
+                "description": "Retrieves every country for the specified filter",
+                "operationId": "searchCountries",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "the identifier of the country to retrieve",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "the page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "description": "the number of elements per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 2147483647
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "sorting parameters",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CountryFilter"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Countries retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer-jwt": []
+                    }
+                ],
+                "x-is-read": "true"
+            }
+        },
+        "/v1/foo": {
+            "post": {
+                "tags": ["foo-bar-controller"],
+                "summary": "Creates a new foo",
+                "description": "Creates a new country using the specified data",
+                "operationId": "postFooBar",
+                "responses": {
+                    "200": {
+                        "description": "Country created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer-jwt": []
+                    }
+                ],
+                "x-is-read": "true"
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CountryDto": {
+                "required": ["isoCode", "name"],
+                "type": "object",
+                "properties": {
+                    "versionLock": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "active": {
+                        "type": "boolean"
+                    },
+                    "createdAt": {
+                        "type": "string"
+                    },
+                    "modifiedAt": {
+                        "type": "string"
+                    },
+                    "modifiedBy": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "maxLength": 50,
+                        "minLength": 0,
+                        "type": "string"
+                    },
+                    "isoCode": {
+                        "maxLength": 2,
+                        "minLength": 0,
+                        "type": "string"
+                    },
+                    "description": {
+                        "maxLength": 255,
+                        "minLength": 0,
+                        "type": "string"
+                    },
+                    "links": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Link"
+                        }
+                    }
+                }
+            },
+
+            "CountryFilter": {
+                "type": "object",
+                "properties": {
+                    "active": {
+                        "type": "boolean"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "isoCode": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PageDto": {
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "page": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "size": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalElements": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "empty": {
+                        "type": "boolean"
+                    },
+                    "first": {
+                        "type": "boolean"
+                    },
+                    "last": {
+                        "type": "boolean"
+                    },
+                    "numberOfElements": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalPages": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearer-jwt": {
+                "type": "http",
+                "description": "Token (JWT) authentication",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

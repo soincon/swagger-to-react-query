@@ -1,0 +1,71 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "My Factory API RESTful",
+        "description": "Contract to deal with factory assets",
+        "termsOfService": "",
+        "contact": {
+            "name": "Staff",
+            "url": "http://www.soincon.es",
+            "email": "admin@soincon.es"
+        },
+        "license": {
+            "name": "SOINCON S.L. private license",
+            "url": ""
+        },
+        "version": "1.0.0"
+    },
+    "externalDocs": {
+        "description": "My Factory API Wiki Documentation",
+        "url": "https://portal.soincon.es/apis/snc-mf-api"
+    },
+    "servers": [
+        {
+            "url": "/snc-mf-api"
+        }
+    ],
+    "security": [
+        {
+            "bearer-jwt": ["read", "write"]
+        }
+    ],
+    "paths": {
+        "/getMe/{clientId}": {
+            "get": {
+                "tags": ["little-controller"],
+                "summary": "Returns the specified country",
+                "description": "Retrieves the data that match with the specified identifier",
+                "operationId": "getMe",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "path",
+                        "description": "clientId",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Country retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CountryDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

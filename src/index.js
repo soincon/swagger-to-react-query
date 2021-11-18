@@ -1,19 +1,16 @@
 #!/usr/bin/env node
+const { join } = require('path');
+const { writeFileSync, mkdirSync, existsSync, copyFileSync } = require('fs');
+const meow = require('meow');
+const chalk = require('chalk');
+const fetch = require('node-fetch');
 
-'use strict'
+const generator = require('./generator');
 
-const { join } = require('path')
-const { writeFileSync, mkdirSync, existsSync } = require('fs')
-const meow = require('meow')
-const chalk = require('chalk')
-const ky = require('ky-universal')
-
-const generator = require('./generator')
-
-const log = console.log
+const log = console.log;
 
 const cli = meow(
-  `
+    `
   Usage
     $ swagger-to-react-query <configFile>
 
@@ -23,83 +20,85 @@ const cli = meow(
   Examples
     $ swagger-to-react-query config.js --hooks
 `,
-  {
-    flags: {
-      hooks: {
-        type: 'boolean',
-        alias: 'hk',
-      },
-    },
-  }
-)
+    {
+        flags: {
+            hooks: {
+                type: 'boolean',
+                alias: 'hk',
+            },
+        },
+    }
+);
 
-const [configFile] = cli.input
+const [configFile] = cli.input;
 
 if (!configFile) {
-  throw new Error('Config file is required')
+    throw new Error('Config file is required');
 }
 
-const configs = require(join(process.cwd(), configFile))
+const configMain = require(join(process.cwd(), configFile));
+
+if (!configMain.dir) throw new Error(`"dir" is required`);
+
+const currentDir = process.cwd();
+const generatedPath = join(currentDir, configMain.dir);
+if (!existsSync(generatedPath)) {
+    mkdirSync(generatedPath);
+}
 
 async function importSpecs({ url, headers = {}, json }) {
-  if (url) {
-    log(chalk.green(`Start import specs from "${url}"`))
+    if (url) {
+        log(chalk.green(`Start import specs from "${url}"`));
 
-    try {
-      const req = await ky(url, { headers, timeout: false })
-      const data = await req.json()
+        try {
+            const req = await fetch(url, { headers });
+            const data = await req.json();
 
-      return data
-    } catch (err) {
-      throw new Error(`Fail to import specs from "${url}"`)
+            return data;
+        } catch (err) {
+            throw new Error(`Fail to import specs from "${url}"`);
+        }
     }
-  }
 
-  if (json) {
-    return json
-  }
+    if (json) {
+        return json;
+    }
 
-  throw new Error(`Fail to import specs from "${url || json}"`)
+    throw new Error(`Fail to import specs from "${url || json}"`);
 }
 
 Promise.all(
-  configs.apis.map(async (config) => {
-    log(chalk.green(`Start ${config.name}`))
+    configMain.apis.map(async (config) => {
+        log(chalk.green(`Start ${config.name}`));
 
-    if (!config.input || (!config.input.url && !config.input.json)) {
-      throw new Error(`"input.url" or "input.json" is required`)
-    }
+        if (!config.input || (!config.input.url && !config.input.json)) {
+            throw new Error(`"input.url" or "input.json" is required`);
+        }
 
-    if (!config.output) {
-      throw new Error(`"output" is required`)
-    }
+        if (!config.output.dir) throw new Error(`"output.dir" is required`);
+        if (!config.apiUrl) throw new Error(`"apiUrl" is required`);
 
-    if (!config.output.path) {
-      throw new Error(`"output.path" is required`)
-    }
+        const specs = await importSpecs(config.input);
+        const jsPath = join(generatedPath, config.output.dir);
+        if (!existsSync(jsPath)) {
+            mkdirSync(jsPath);
+        }
 
-    if (!config.output.file) {
-      throw new Error(`"output.file" is required`)
-    }
-
-    const specs = await importSpecs(config.input)
-
-    const { code, types } = await generator({ specs, config })
-
-    const path = join(process.cwd(), config.output.path)
-
-    if (!existsSync(path)) {
-      mkdirSync(path)
-    }
-
-    writeFileSync(join(path, `${config.output.file}.js`), code)
-    writeFileSync(join(path, `${config.output.file}.d.ts`), types)
-  })
+        const { controllers, globalTypes } = await generator({ specs, config });
+        Object.entries(controllers).forEach(([controller, { code, types }]) => {
+            writeFileSync(join(jsPath, `${controller}.js`), code);
+            writeFileSync(join(jsPath, `${controller}.d.ts`), types);
+        });
+        writeFileSync(join(jsPath, `index.d.ts`), globalTypes);
+    })
 )
-  .then(() => {
-    log(chalk.green('Finish!'))
-  })
-  .catch((err) => {
-    log(chalk.red(err.message))
-    process.exit(1)
-  })
+    .then(() => {
+        copyFileSync(join(__dirname, 'generatorHelpers.js'), join(generatedPath, 'generatorHelpers.js'));
+    })
+    .then(() => {
+        log(chalk.green('Finish!'));
+    })
+    .catch((err) => {
+        log(chalk.red(err.message));
+        process.exit(1);
+    });
