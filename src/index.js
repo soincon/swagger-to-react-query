@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const { join } = require('path');
+const path = require('path');
 const { writeFileSync, mkdirSync, existsSync, copyFileSync } = require('fs');
 const meow = require('meow');
 const chalk = require('chalk');
@@ -77,6 +78,10 @@ Promise.all(
 
         if (!config.output.dir) throw new Error(`"output.dir" is required`);
         if (!config.apiUrl) throw new Error(`"apiUrl" is required`);
+        
+        if (config.fn) {
+            copyFileSync(path.resolve(config.fn), join(generatedPath, 'getApiUrl.js'));
+        }
 
         const specs = await importSpecs(config.input);
         const jsPath = join(generatedPath, config.output.dir);
@@ -94,6 +99,7 @@ Promise.all(
 )
     .then(() => {
         copyFileSync(join(__dirname, 'generatorHelpers.js'), join(generatedPath, 'generatorHelpers.js'));
+        copyFileSync(join(__dirname, 'fetchJson.js'), join(generatedPath, 'fetchJson.js'));
     })
     .then(() => {
         log(chalk.green('Finish!'));

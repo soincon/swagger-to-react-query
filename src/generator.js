@@ -1,7 +1,7 @@
 const chalk = require('chalk');
 const swagger2openapi = require('swagger2openapi');
 
-const { pascalCase, camelCase } = require('./utils');
+const { pascalCase, camelCase, ifElse } = require('./utils');
 const generatorApi = require('./generatorApi');
 const generatorHook = require('./generatorHook');
 const generatorApiTypes = require('./generatorApiTypes');
@@ -163,20 +163,15 @@ ${globalTypes}
             typesReactQueryImports.push('UseMutationOptions', 'MutateFunction', 'UseMutationResult');
         }
         const controllerHeader = `/* eslint-disable */
-/* tslint:disable */
-import { ${codeReactQueryImports.join(', ')} } from 'react-query'
-import { queryFn, mutationFn } from '../generatorHelpers';
-
-const apiUrlConfigPath = ${config.apiUrl.configPath ? "'" + config.apiUrl.configPath + "'" : 'undefined' };
-const apiUrlValue = ${config.apiUrl.eval ? config.apiUrl.eval : 'undefined' };
-const skipAuth = ${config.skipAuth !== undefined ? config.skipAuth : 'false' };
-const generatorConfig = {
-    ...(apiUrlConfigPath && { apiUrlConfigPath }),
-    ...(apiUrlValue && { apiUrlValue }),
-    ...(skipAuth && { skipAuth }),
-};
-        
-`;
+        /* tslint:disable */
+        import { ${codeReactQueryImports.join(', ')} } from 'react-query'
+        import { queryFn, mutationFn } from '../generatorHelpers';
+        ${ifElse(config.apiUrl.fn, `import getApiUrl from '../../getApiUrl';`, '')}
+        const generatorConfig = {
+            apiUrl: ${ifElse(config.apiUrl.fn, `getApiUrl()`, config.apiUrl.value)},
+            skipAuth: ${ifElse(config.skipAuth !== undefined, config.skipAuth, 'false')},
+        };
+        `;
         const controllerTypesHeader = `/* eslint-disable */
 /* tslint:disable */
 import { UseQueryOptions, UseQueryResult, UseMutationOptions, MutateFunction, UseMutationResult } from 'react-query'

@@ -1,18 +1,13 @@
 /* eslint-disable */
-/* tslint:disable */
-import { useQuery, useMutation } from 'react-query'
-import { queryFn, mutationFn } from '../generatorHelpers';
-
-const apiUrlConfigPath = 'products.vt.baseUrl';
-const apiUrlValue = undefined;
-const skipAuth = false;
-const generatorConfig = {
-    ...(apiUrlConfigPath && { apiUrlConfigPath }),
-    ...(apiUrlValue && { apiUrlValue }),
-    ...(skipAuth && { skipAuth }),
-};
+        /* tslint:disable */
+        import { useQuery, useMutation } from 'react-query'
+        import { queryFn, mutationFn } from '../generatorHelpers';
+        import getApiUrl from '../../getApiUrl';
+        const generatorConfig = {
+            apiUrl: getApiUrl(),
+            skipAuth: false,
+        };
         
-
 // get: {apiUrl}/v1/{clientId}/countries/{id}
 export const getCountry = (pathParams, options = {}) => queryFn(generatorConfig)({ method: 'get', ...options })({ queryKey:['{apiUrl}/v1/{clientId}/countries/{id}', pathParams, {}, {}]})
 export const useGetCountry = (pathParams, config, options = {}) => useQuery({

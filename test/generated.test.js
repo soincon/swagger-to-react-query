@@ -2,7 +2,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import mockGet from 'lodash/get';
 
 const {
     getCountry,
@@ -24,30 +23,15 @@ const { getMe } = require('./generated/mini-api/little');
 const apiUrl = 'https://vt.api';
 const clientId = 2;
 
-jest.mock('lodash-es/get', () => mockGet);
-
-jest.mock('@snc/api', () => ({
+jest.mock('./generated/fetchJson', () => ({
     fetchJson: (req) => req,
 }));
-jest.mock('@snc/emi-config', () => ({
-    getConfig: () => ({
-        products: { vt: { baseUrl: apiUrl } },
-    }),
-}));
-jest.mock('@snc/auth', () => ({
-    fetchUser: () => ({
-        clientId,
-    }),
-    getUser: () => ({
-        clientId,
-    }),
-    getToken: () => 'fooToken',
-}));
+
 const country = { isoCode: '1', name: 'a' };
 
-test('get', async (done) => {
+test('get', async () => {
     queryClient.clear();
-    const fetchData = await getCountry({ id: 1 });
+    const fetchData = await getCountry({ id: 1, clientId: 2 });
 
     const onResult = (hookData) => {
         [fetchData, hookData].forEach((result) => {
@@ -56,15 +40,14 @@ test('get', async (done) => {
             expect(result.queryParams).toStrictEqual({});
         });
         assertHook({
-            queryKey: [useGetCountry.queryKey, { id: 1 }],
+            queryKey: [useGetCountry.queryKey, { id: 1, clientId: 2 }],
             config: { cacheTime: 1000 },
         });
-        done();
     };
-    render(<Providers onResult={onResult} hook={() => useGetCountry({ id: 1 }, { cacheTime: 1000 })} />);
+    render(<Providers onResult={onResult} hook={() => useGetCountry({ id: 1, clientId: 2 }, { cacheTime: 1000 })} />);
 });
 
-test('get with query', async (done) => {
+test('get with query', async () => {
     queryClient.clear();
     const fetchData = await getCountryWithQuery({ id: 1 }, { param: 1 });
 
@@ -79,14 +62,13 @@ test('get with query', async (done) => {
             queryKey: [useGetCountryWithQuery.queryKey, { id: 1 }, { param: 1 }],
             config: { cacheTime: 1000 },
         });
-        done();
     };
     render(<Providers onResult={onResult} hook={() => useGetCountryWithQuery({ id: 1 }, { param: 1 }, { cacheTime: 1000 })} />);
 });
 
-test('put with body', async (done) => {
+test('put with body', async () => {
     queryClient.clear();
-    const fetchData = await putCountry({ id: 1 }, country);
+    const fetchData = await putCountry({ id: 1, clientId: 2 }, country);
 
     const onResult = (hookData) => {
         [fetchData, hookData].forEach((result) => {
@@ -95,12 +77,11 @@ test('put with body', async (done) => {
             expect(result.body).toStrictEqual(country);
             expect(result.queryParams).toStrictEqual({});
         });
-        done();
     };
-    render(<Providers onResult={onResult} hook={() => usePutCountry({ id: 1 }, { onSuccess: onResult })} body={country} />);
+    render(<Providers onResult={onResult} hook={() => usePutCountry({ id: 1, clientId: 2 }, { onSuccess: onResult })} body={country} />);
 });
 
-test('search', async (done) => {
+test('search', async () => {
     queryClient.clear();
     const fetchData = await searchCountries({ id: 1 }, { name: 'Bobo' }, { size: 30 });
 
@@ -115,14 +96,13 @@ test('search', async (done) => {
             queryKey: [useSearchCountries.queryKey, { id: 1 }, { name: 'Bobo' }, { size: 30 }],
             config: { cacheTime: 1000 },
         });
-        done();
     };
     render(
         <Providers onResult={onResult} hook={() => useSearchCountries({ id: 1 }, { name: 'Bobo' }, { size: 30 }, { cacheTime: 1000 })} />
     );
 });
 
-test('post - create', async (done) => {
+test('post - create', async () => {
     queryClient.clear();
     const fetchData = await postCountry(country);
 
@@ -133,14 +113,13 @@ test('post - create', async (done) => {
             expect(result.body).toStrictEqual(country);
             expect(result.queryParams).toStrictEqual({});
         });
-        done();
     };
     render(<Providers onResult={onResult} hook={() => usePostCountry({ onSuccess: onResult })} body={country} />);
 });
 
-test('post - create with path params', async (done) => {
+test('post - create with path params', async () => {
     queryClient.clear();
-    const fetchData = await postCountryWithPathParams({ someParam: 909 }, country);
+    const fetchData = await postCountryWithPathParams({ someParam: 909, clientId: 2 }, country);
 
     const onResult = (hookData) => {
         [fetchData, hookData].forEach((result) => {
@@ -149,22 +128,20 @@ test('post - create with path params', async (done) => {
             expect(result.body).toStrictEqual(country);
             expect(result.queryParams).toStrictEqual({});
         });
-        done();
     };
     render(
         <Providers
             onResult={onResult}
-            hook={() => usePostCountryWithPathParams({ someParam: 909 }, { onSuccess: onResult })}
+            hook={() => usePostCountryWithPathParams({ someParam: 909, clientId: 2 }, { onSuccess: onResult })}
             body={country}
         />
     );
 });
 
-test('mini api', async (done) => {
+test('mini api', async () => {
     queryClient.clear();
-    const fetchData = await getMe({ clientId: 9 }); // if skipAuth were 'false' then this clientId would be ignored
+    const fetchData = await getMe({ clientId: 9 });
     expect(fetchData).toMatchObject({ method: 'get', url: 'http://my-api.com/getMe/9', queryParams: {}, body: {} });
-    done();
 });
 
 test('postFooBar', () => {

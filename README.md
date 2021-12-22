@@ -1,4 +1,4 @@
-# @snc/api-generator
+# api-generator
 
 Based on https://github.com/elsangedy/swagger-to-react-query
 
@@ -7,7 +7,7 @@ Based on https://github.com/elsangedy/swagger-to-react-query
 Install the tool
 
 ```sh
-yarn add @snc/api-generator -D
+yarn add api-generator -D
 ```
 
 Create a config file e.g. `generator.config.js`

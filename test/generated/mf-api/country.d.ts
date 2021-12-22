@@ -15,7 +15,7 @@ export type GetCountryPathParams = { clientId?: number; id: number }
 
  * Retrieves the data that match with the specified identifier
 
- * https://swaggerDoc.com/country-controller/getCountry
+ * https://swaggerDoc.com#/country-controller/getCountry
  */
 export function getCountry(pathParams?: GetCountryPathParams, options?: RequestInit): Promise<CountryDto>;
 /**
@@ -23,7 +23,7 @@ export function getCountry(pathParams?: GetCountryPathParams, options?: RequestI
 
  * Retrieves the data that match with the specified identifier
 
- * https://swaggerDoc.com/country-controller/getCountry
+ * https://swaggerDoc.com#/country-controller/getCountry
  */
 export function useGetCountry(pathParams?: GetCountryPathParams, config?: UseQueryOptions<CountryDto>, options?: RequestInit): UseQueryResult<CountryDto>;
 declare namespace useGetCountry {
@@ -31,13 +31,13 @@ declare namespace useGetCountry {
     export const queryKey: string;
 }
 
-export type PutCountryPathParams = { id: number }
+export type PutCountryPathParams = { clientId?: number; id: number }
 /**
  * Updates the specified country
 
  * Updates the existing data with the specified one in the request body
 
- * https://swaggerDoc.com/country-controller/putCountry
+ * https://swaggerDoc.com#/country-controller/putCountry
  */
 export function putCountry(pathParams?: PutCountryPathParams, body?: CountryDto | [PutCountryPathParams?, void?, CountryDto?, RequestInit?], options?: RequestInit): Promise<CountryDto>;
 /**
@@ -45,7 +45,7 @@ export function putCountry(pathParams?: PutCountryPathParams, body?: CountryDto 
 
  * Updates the existing data with the specified one in the request body
 
- * https://swaggerDoc.com/country-controller/putCountry
+ * https://swaggerDoc.com#/country-controller/putCountry
  */
 export function usePutCountry(pathParams?: PutCountryPathParams, config?: UseMutationOptions<CountryDto, unknown, CountryDto>, options?: RequestInit): UseMutationResult<CountryDto, unknown, CountryDto>;
 export type DeleteCountryPathParams = { id: number }
@@ -54,7 +54,7 @@ export type DeleteCountryPathParams = { id: number }
 
  * Removes the existing data permanently
 
- * https://swaggerDoc.com/country-controller/deleteCountry
+ * https://swaggerDoc.com#/country-controller/deleteCountry
  */
 export function deleteCountry(pathParams?: DeleteCountryPathParams, options?: RequestInit): Promise<void>;
 /**
@@ -62,7 +62,7 @@ export function deleteCountry(pathParams?: DeleteCountryPathParams, options?: Re
 
  * Removes the existing data permanently
 
- * https://swaggerDoc.com/country-controller/deleteCountry
+ * https://swaggerDoc.com#/country-controller/deleteCountry
  */
 export function useDeleteCountry(pathParams?: DeleteCountryPathParams, config?: UseMutationOptions<void, unknown, void>, options?: RequestInit): UseMutationResult<void, unknown, void>;
 export type PatchCountryPathParams = { id: number }
@@ -71,7 +71,7 @@ export type PatchCountryPathParams = { id: number }
 
  * Updates the existing data with a structure which has the changes to apply (see rfc6902)
 
- * https://swaggerDoc.com/country-controller/patchCountry
+ * https://swaggerDoc.com#/country-controller/patchCountry
  */
 export function patchCountry(pathParams?: PatchCountryPathParams, body?: JsonPatch | [PatchCountryPathParams?, void?, JsonPatch?, RequestInit?], options?: RequestInit): Promise<CountryDto>;
 /**
@@ -79,7 +79,7 @@ export function patchCountry(pathParams?: PatchCountryPathParams, body?: JsonPat
 
  * Updates the existing data with a structure which has the changes to apply (see rfc6902)
 
- * https://swaggerDoc.com/country-controller/patchCountry
+ * https://swaggerDoc.com#/country-controller/patchCountry
  */
 export function usePatchCountry(pathParams?: PatchCountryPathParams, config?: UseMutationOptions<CountryDto, unknown, JsonPatch>, options?: RequestInit): UseMutationResult<CountryDto, unknown, JsonPatch>;
 /**
@@ -87,7 +87,7 @@ export function usePatchCountry(pathParams?: PatchCountryPathParams, config?: Us
 
  * Creates a new country using the specified data
 
- * https://swaggerDoc.com/country-controller/postCountry
+ * https://swaggerDoc.com#/country-controller/postCountry
  */
 export function postCountry(body?: CountryDto | [void?, void?, CountryDto?, RequestInit?], options?: RequestInit): Promise<CountryDto>;
 /**
@@ -95,7 +95,7 @@ export function postCountry(body?: CountryDto | [void?, void?, CountryDto?, Requ
 
  * Creates a new country using the specified data
 
- * https://swaggerDoc.com/country-controller/postCountry
+ * https://swaggerDoc.com#/country-controller/postCountry
  */
 export function usePostCountry(config?: UseMutationOptions<CountryDto, unknown, CountryDto>, options?: RequestInit): UseMutationResult<CountryDto, unknown, CountryDto>;
 export type PostCountryWithPathParamsPathParams = { clientId?: number; someParam: number }
@@ -104,7 +104,7 @@ export type PostCountryWithPathParamsPathParams = { clientId?: number; someParam
 
  * Creates a new country using the specified data
 
- * https://swaggerDoc.com/country-controller/postCountryWithPathParams
+ * https://swaggerDoc.com#/country-controller/postCountryWithPathParams
  */
 export function postCountryWithPathParams(pathParams?: PostCountryWithPathParamsPathParams, body?: CountryDto | [PostCountryWithPathParamsPathParams?, void?, CountryDto?, RequestInit?], options?: RequestInit): Promise<CountryDto>;
 /**
@@ -112,7 +112,7 @@ export function postCountryWithPathParams(pathParams?: PostCountryWithPathParams
 
  * Creates a new country using the specified data
 
- * https://swaggerDoc.com/country-controller/postCountryWithPathParams
+ * https://swaggerDoc.com#/country-controller/postCountryWithPathParams
  */
 export function usePostCountryWithPathParams(pathParams?: PostCountryWithPathParamsPathParams, config?: UseMutationOptions<CountryDto, unknown, CountryDto>, options?: RequestInit): UseMutationResult<CountryDto, unknown, CountryDto>;
 export type GetCountryWithQueryPathParams = { clientId?: number; id: number }
@@ -120,13 +120,13 @@ export type GetCountryWithQueryQueryParams = { param?: number }
 /**
  * 
  * 
- * https://swaggerDoc.com/country-controller/getCountryWithQuery
+ * https://swaggerDoc.com#/country-controller/getCountryWithQuery
  */
 export function getCountryWithQuery(pathParams?: GetCountryWithQueryPathParams, queryParams?: GetCountryWithQueryQueryParams, options?: RequestInit): Promise<CountryDto>;
 /**
  * 
  * 
- * https://swaggerDoc.com/country-controller/getCountryWithQuery
+ * https://swaggerDoc.com#/country-controller/getCountryWithQuery
  */
 export function useGetCountryWithQuery(pathParams?: GetCountryWithQueryPathParams, queryParams?: GetCountryWithQueryQueryParams, config?: UseQueryOptions<CountryDto>, options?: RequestInit): UseQueryResult<CountryDto>;
 declare namespace useGetCountryWithQuery {
@@ -141,7 +141,7 @@ export type SearchCountriesQueryParams = { page?: number; size?: number; sort?: 
 
  * Retrieves every country for the specified filter
 
- * https://swaggerDoc.com/country-controller/searchCountries
+ * https://swaggerDoc.com#/country-controller/searchCountries
  */
 export function searchCountries(pathParams?: SearchCountriesPathParams, body?: CountryFilter | [SearchCountriesPathParams?, SearchCountriesQueryParams?, CountryFilter?, RequestInit?], queryParams?: SearchCountriesQueryParams, options?: RequestInit): Promise<PageDto>;
 /**
@@ -149,7 +149,7 @@ export function searchCountries(pathParams?: SearchCountriesPathParams, body?: C
 
  * Retrieves every country for the specified filter
 
- * https://swaggerDoc.com/country-controller/searchCountries
+ * https://swaggerDoc.com#/country-controller/searchCountries
  */
 export function useSearchCountries(pathParams?: SearchCountriesPathParams, body?: CountryFilter, queryParams?: SearchCountriesQueryParams, config?: UseQueryOptions<PageDto>, options?: RequestInit): UseQueryResult<PageDto>;
 declare namespace useSearchCountries {

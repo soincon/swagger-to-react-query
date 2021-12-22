@@ -1,8 +1,8 @@
 const generator = require('../src/generator');
 
-test('generate', async (done) => {
+test('generate', async () => {
     const config = {
-        name: 'MF API',
+        name: 'My API',
         input: {
             json: require('./apiSchema.json'),
         },
@@ -10,7 +10,7 @@ test('generate', async (done) => {
             dir: './generated/snapshotTest',
         },
         apiUrl: {
-            configPath: 'products.vt.baseUrl',
+            value: "'http://my-api.com'",
         },
     };
 
@@ -20,5 +20,4 @@ test('generate', async (done) => {
     Object.entries(controllers).forEach(([, { types }]) => {
         expect(types).toMatchSnapshot();
     });
-    done();
 });

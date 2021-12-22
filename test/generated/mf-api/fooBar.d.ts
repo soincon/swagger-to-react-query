@@ -14,7 +14,7 @@ export type PageDto = { content?: {}[]; page?: number; size?: number; totalEleme
 
  * Creates a new country using the specified data
 
- * https://swaggerDoc.com/foo-bar-controller/postFooBar
+ * https://swaggerDoc.com#/foo-bar-controller/postFooBar
  */
 export function postFooBar(options?: RequestInit): Promise<CountryDto>;
 /**
@@ -22,7 +22,7 @@ export function postFooBar(options?: RequestInit): Promise<CountryDto>;
 
  * Creates a new country using the specified data
 
- * https://swaggerDoc.com/foo-bar-controller/postFooBar
+ * https://swaggerDoc.com#/foo-bar-controller/postFooBar
  */
 export function usePostFooBar(config?: UseQueryOptions<CountryDto>, options?: RequestInit): UseQueryResult<CountryDto>;
 declare namespace usePostFooBar {

@@ -1,35 +1,19 @@
 /* eslint-disable */
 /* tslint:disable */
-import get from 'lodash-es/get';
-import { getConfig } from '@snc/emi-config';
-import { getUser } from '@snc/auth';
-import { fetchJson } from '@snc/api';
+import { fetchJson } from './fetchJson';
 
 const requestFn = async ({ url, method, pathParams, queryParams, generatorConfig, ...rest }) => {
     const urlPathParams = url.match(/{([^}]+)}/g); // Creates an array e.g. [ '{id}' ]
     const pathParamsExtra = {
+        apiUrl: generatorConfig.apiUrl,
         ...pathParams,
     };
-    if (generatorConfig) {
-        let apiUrl;
-        if (generatorConfig.apiUrlConfigPath) {
-            const config = await getConfig();
-            apiUrl = get(config, generatorConfig.apiUrlConfigPath);
-        }
-        if (generatorConfig.apiUrlValue) {
-            apiUrl = generatorConfig.apiUrlValue;
-        }
-        Object.assign(pathParamsExtra, {
-            ...pathParams,
-            apiUrl,
-        });
-    }
-    if (!generatorConfig || !generatorConfig.skipAuth) {
-        const user = await getUser();
-        Object.assign(pathParamsExtra, {
-            clientId: user.clientId,
-        });
-    }
+    // if (!generatorConfig || !generatorConfig.skipAuth) {
+    //     const user = await getUser();
+    //     Object.assign(pathParamsExtra, {
+    //         clientId: user.clientId,
+    //     });
+    // }
 
     if (urlPathParams) {
         url = urlPathParams.reduce((acc, param) => acc.replace(param, pathParamsExtra[param.replace(/{|}/g, '')]), url);

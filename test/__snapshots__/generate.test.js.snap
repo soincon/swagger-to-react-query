@@ -47,7 +47,7 @@ declare namespace useGetCountry {
     export const queryKey: string;
 }
 
-export type PutCountryPathParams = { id: number }
+export type PutCountryPathParams = { clientId?: number; id: number }
 /**
  * Updates the specified country
 

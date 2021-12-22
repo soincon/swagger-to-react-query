@@ -88,6 +88,16 @@
                 "operationId": "putCountry",
                 "parameters": [
                     {
+                        "name": "clientId",
+                        "in": "path",
+                        "description": "clientId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
                         "name": "id",
                         "in": "path",
                         "description": "the identifier of the country to update",

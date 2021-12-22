@@ -11,7 +11,7 @@ module.exports = {
             },
             swaggerUrl: 'https://swaggerDoc.com/',
             apiUrl: {
-                configPath: 'products.vt.baseUrl',
+                fn: 'test/getApiUrl.js',
             },
         },
         {
@@ -25,7 +25,7 @@ module.exports = {
             swaggerUrl: 'https://swaggerDoc.com',
             skipAuth: true,
             apiUrl: {
-                eval: "'http://my-api.com'",
+                value: "'http://my-api.com'",
             },
         },
     ],
